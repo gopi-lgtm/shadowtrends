@@ -60,27 +60,25 @@ function applyCoupon() {
 }
 
 function checkout() {
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
+  const name = document.getElementById("buyer-name").value;
+  const phone = document.getElementById("buyer-phone").value;
+  const address = document.getElementById("buyer-address").value;
+
+  if (!name || !phone || !address) {
+    alert("Please fill in all your details before ordering.");
     return;
   }
 
-  let message = "Order from ShadowTrends:%0A";
-  cart.forEach(item => {
-    message += `${item.product} — ₹${item.price}%0A`;
+  let message = 🛒 *New Order from ShadowTrends* 🖤\n\n*Customer Name:* ${name}\n*Phone:* ${phone}\n*Address:*\n${address}\n\n*Items:*;
+
+  cart.forEach((item, index) => {
+    message += \n${index + 1}. ${item.product} - ₹${item.price};
   });
 
-  let totalBeforeDiscount = cart.reduce((sum, item) => sum + item.price, 0);
-  let finalTotal = totalBeforeDiscount - discount;
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  message += \n\n💰 *Total:* ₹${total};
 
-  if (discount > 0) {
-    message += `%0ACoupon Applied: ${appliedCoupon}%0A`;
-    message += `Original Total: ₹${totalBeforeDiscount}%0A`;
-    message += `Discount: ₹${discount}%0A`;
-  }
-
-  message += `Total to Pay: ₹${finalTotal}`;
-
-  const phoneNumber = "91 9553702309"; // ✅ YOUR WhatsApp Number (no space)
-  window.open(`https://wa.me/${phoneNumber}?text=${message}`);
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappLink = https://wa.me/91YOURNUMBER?text=${encodedMessage};
+  window.open(whatsappLink, '_blank');
 }
