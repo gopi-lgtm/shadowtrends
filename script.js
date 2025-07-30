@@ -1,55 +1,99 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  text-align: center;
+let cart = [];
+let discount = 0;
+let appliedCoupon = null;
+
+function addToCart(product, price) {
+  cart.push({ product, price });
+  updateCart();
 }
 
-header {
-  background: #000;
-  color: #fff;
-  padding: 40px 20px;
+function updateCart() {
+  const cartItems = document.getElementById('cart-items');
+  const totalEl = document.getElementById('total');
+  cartItems.innerHTML = '';
+
+  let totalBeforeDiscount = 0;
+  cart.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = ${item.product} — ₹${item.price};
+    cartItems.appendChild(li);
+    totalBeforeDiscount += item.price;
+  });
+
+  let finalTotal = totalBeforeDiscount - discount;
+
+  if (discount > 0) {
+    totalEl.innerHTML = Total: <s>₹${totalBeforeDiscount}</s> <strong>₹${finalTotal}</strong> (₹${discount} OFF);
+  } else {
+    totalEl.textContent = Total: ₹${totalBeforeDiscount};
+  }
 }
 
-.products {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 40px 20px;
+function applyCoupon() {
+  const code = document.getElementById('couponInput').value.trim().toLowerCase();
+  const message = document.getElementById('coupon-message');
+
+  const validCoupons = ['vts_cuts', 'gopi123', 'mahesh123', 'teja123'];
+  const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
+
+  if (validCoupons.includes(code)) {
+    if (cartTotal >= 900) {
+      discount = 100;
+      appliedCoupon = code;
+      message.textContent = 🎉 ₹100 OFF applied with code: ${code};
+      message.style.color = "green";
+    } else {
+      discount = 0;
+      appliedCoupon = null;
+      message.textContent = "❌ Minimum ₹900 required for this coupon.";
+      message.style.color = "orange";
+    }
+  } else {
+    discount = 0;
+    appliedCoupon = null;
+    message.textContent = "❌ Invalid coupon code.";
+    message.style.color = "red";
+  }
+
+  updateCart();
 }
 
-.product {
-  border: 1px solid #ddd;
-  background: #fff;
-  padding: 20px;
-  width: 200px;
-}
+function checkout() {
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
 
-.product img {
-  width: 100%;
-  height: auto;
-}
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+  if (!name || !phone || !address) {
+    alert("Please enter your name, phone, and address.");
+    return;
+  }
 
-button {
-  background: #111;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-}
+  let message = Order from ShadowTrends:%0A;
+  cart.forEach(item => {
+    message += ${item.product} — ₹${item.price}%0A;
+  });
 
-button:hover {
-  background: #444;
-}
+  let totalBeforeDiscount = cart.reduce((sum, item) => sum + item.price, 0);
+  let finalTotal = totalBeforeDiscount - discount;
 
-.cart {
-  padding: 40px 20px;
-}
+  if (discount > 0) {
+    message += %0ACoupon Applied: ${appliedCoupon}%0A;
+    message += Original Total: ₹${totalBeforeDiscount}%0A;
+    message += Discount: ₹${discount}%0A;
+  }
 
-footer {
-  background: #000;
-  color: #fff;
-  padding: 20px;
-  font-size: 14px;
+  message += %0ATotal to Pay: ₹${finalTotal}%0A%0A;
+  message += Name: ${name}%0APhone: ${phone}%0AAddress: ${address};
+
+  const numbers = ["919553702309", "919123456789", "919988776655"];
+
+  numbers.forEach((num, index) => {
+    setTimeout(() => {
+      window.open(https://wa.me/${num}?text=${message}, '_blank');
+    }, index * 1000);
+  });
 }
