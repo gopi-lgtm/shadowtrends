@@ -14,22 +14,17 @@
 
   <section class="products">
     <div class="product">
-      <img src="https://i.ibb.co/zTg87SVM/Save-Vid-Net-517733473-18002964311792800-1953240751858412247-n.jpg" alt="Product 1">
+      <img src="https://i.ibb.co/zTg87SVM/Save-Vid-Net-517733473-18002964311792800-1953240751858412247-n.jpg" alt="Shadow T-Shirt" />
       <h2>Shadow T-Shirt</h2>
       <p>₹459</p>
       <button onclick="addToCart('Shadow T-Shirt', 459)">Add to Cart</button>
     </div>
+
     <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Product 2">
+      <img src="https://via.placeholder.com/200" alt="Shadow Hoodie" />
       <h2>Shadow Hoodie</h2>
       <p>₹999</p>
       <button onclick="addToCart('Shadow Hoodie', 999)">Add to Cart</button>
-    </div>
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Product 3">
-      <h2>Shadow Cap</h2>
-      <p>₹299</p>
-      <button onclick="addToCart('Shadow Cap', 299)">Add to Cart</button>
     </div>
 
     <div class="coupon-box">
@@ -44,10 +39,9 @@
     <ul id="cart-items"></ul>
     <p id="total">Total: ₹0</p>
 
-    <h3>Delivery Details</h3>
-    <input type="text" id="name" placeholder="Your Name" /><br>
-    <input type="tel" id="phone" placeholder="Your Phone Number" /><br>
-    <textarea id="address" placeholder="Delivery Address"></textarea><br>
+    <div class="address-box">
+      <textarea id="address" placeholder="Enter delivery address"></textarea>
+    </div>
 
     <button onclick="checkout()">Order on WhatsApp</button>
   </section>
